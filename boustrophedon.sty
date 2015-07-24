@@ -1,47 +1,52 @@
 % Boustrophedon package for LaTeX.
-% Andreas Wagner
+% * Originally written by Andreas Wagner:
+%  GitHub: https://github.com/lowfatcomputing/latex-boustrophedon
+% * Modified by Hironobu YAMASHITA (a.k.a. Acetaminophen)
+%  Blog: http://acetaminophen.hatenablog.com/
+%  Twitter: @aminophen
 \NeedsTeXFormat{LaTeX2e}
-\usepackage{xparse}
-\usepackage{environ}
-\usepackage{rotating}
-\usepackage{ifthen}
-\usepackage{everyhook}
-\usepackage{graphicx}
-\usepackage{calc}
-\ProvidesPackage{boustrophedon}[2011/09/25 Boustrophedon and Rongorongo formatting package.]
+\RequirePackage{environ}
+\RequirePackage{graphicx}
+\ProvidesPackage{boustrophedon}[2015/07/24 Boustrophedon and Rongorongo formatting package.]
 \newbox\linebox
 \newcount\mycount
 
 \def\splitlines{%
-	\setbox\linebox\lastbox
-	\ifvoid\linebox
-	\noindent\ignorespaces
-	\else
-	\unskip\unpenalty
-	\begingroup\splitlines\space\endgroup
-	\processline
-\fi}
+  \setbox\linebox\lastbox
+  \ifvoid\linebox
+    \noindent\ignorespaces
+  \else
+    \unskip\unpenalty
+    \begingroup\splitlines\space\endgroup
+    \processline
+  \fi
+}
 
 \NewEnviron{boustrophedon}{%
-	\def\processline{
-		\global\advance\mycount by 1
-		\ifodd\mycount
-		\unhbox\linebox
-		\else
-		\makebox[\textwidth][c]{\smash{\reflectbox{\unhbox\linebox}}}%
-	\fi}
-	\vbox{\BODY\par\splitlines}
+  \def\processline{%
+    \global\advance\mycount by 1
+    \ifodd\mycount
+      \box\linebox
+    \else
+      \makebox[\textwidth][c]{\smash{\reflectbox{\box\linebox}}}%
+    \fi
+  }
+  \vbox{\BODY\par\splitlines}
 }
 
 \NewEnviron{rongorongo}{%
-	\def\processline{
-		\global\advance\mycount by 1
-		\ifodd\mycount
-		\box\linebox
-		\else
-		\makebox[\textwidth][c]{\smash{\rotatebox[origin=c]{180}{\box\linebox}}}%
-	\fi}
-
-	\vbox{\BODY\par\splitlines}
+  \def\processline{%
+    \global\advance\mycount by 1
+    \ifodd\mycount
+      \box\linebox
+    \else
+      \makebox[\textwidth][c]{\smash{\rotatebox[origin=c]{180}{\box\linebox}}}%
+    \fi
+  }
+  \vbox{\BODY\par\splitlines}
 }
 
+\endinput
+
+%%
+%% End of file `boustrophedon.sty'.
