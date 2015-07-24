@@ -23,6 +23,7 @@
 }
 
 \NewEnviron{boustrophedon}{%
+  \mycount=0
   \def\processline{%
     \global\advance\mycount by 1
     \ifodd\mycount
@@ -35,6 +36,7 @@
 }
 
 \NewEnviron{rongorongo}{%
+  \mycount=0
   \def\processline{%
     \global\advance\mycount by 1
     \ifodd\mycount
